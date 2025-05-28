@@ -23,14 +23,14 @@ export default function FeedbackModal({ open, onClose, section }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="rounded-2xl border-0 shadow-xl max-w-4xl">
+      <DialogContent className="rounded-2xl border-0 shadow-xl max-w-6xl p-8">
         <DialogHeader>
           <DialogTitle className="text-xl font-light text-gray-800">
-            ¿Qué te gustaría ajustar en “{section.title}”?
+            ¿Qué te gustaría ajustar en "{section.title}"?
           </DialogTitle>
         </DialogHeader>
 
-        <div className="grid md:grid-cols-2 gap-6 max-h-[60vh] overflow-y-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-h-[70vh] overflow-y-auto">
           {/* bloque original */}
           <div>
             <h4 className="font-medium text-gray-800 mb-2">Contenido actual</h4>
@@ -51,11 +51,19 @@ export default function FeedbackModal({ open, onClose, section }: Props) {
               onChange={(e: { target: { value: SetStateAction<string>; }; }) => setComment(e.target.value)}
             />
 
+            {/* === BOTÓN IA ================================================= */}
             <Button
-              className="w-full rounded-xl bg-[#F2C1D1] text-gray-800 mb-3"
+              /* ——— visual ——— */
+              className="
+                w-full h-12 rounded-xl font-medium
+                bg-pastelPink text-gray-800 shadow
+                hover:bg-pastelPink/90 active:scale-[.98]
+                transition
+              "
+              /* ——— lógica ——— */
               disabled={!comment.trim()}
               onClick={() => {
-                // aquí iría la llamada a IA / backend
+                /* aquí irá la llamada al backend/IA */
                 setComment("");
                 onClose();
               }}

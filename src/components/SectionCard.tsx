@@ -1,17 +1,20 @@
-import { Button } from "../components/ui/button";
-import { Card, CardContent } from "../components/ui/card";
+import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
 import { ThumbsUp, Edit, CheckCircle } from "lucide-react";
 import type { PlanSection } from "../mocks/plan";
 
 interface Props {
-  section: PlanSection;
-  accepted: boolean;
-  onAccept: () => void;
-  onEdit: () => void;
+  section:   PlanSection;
+  accepted:  boolean;
+  onAccept:  () => void;
+  onEdit:    () => void;          
 }
 
-export default function SectionCard({ section, accepted, onAccept, onEdit }: Props) {
+export default function SectionCard({
+  section, accepted, onAccept, onEdit
+}: Props) {
   const Icon = section.icon;
+
   return (
     <Card className={`rounded-2xl border-0 shadow-md ${section.color}`}>
       <CardContent className="p-6">
@@ -35,18 +38,25 @@ export default function SectionCard({ section, accepted, onAccept, onEdit }: Pro
 
         {/* botones */}
         <div className="flex gap-3">
+          {/* Aceptar */}
           <Button
-            className={`flex-1 rounded-xl ${accepted ? "bg-green-100 text-green-700" : "bg-white/70 text-gray-800"}`}
+            className={`flex-1 rounded-xl ${
+              accepted
+                ? "bg-green-100 text-green-700"
+                : "bg-white/70 text-gray-800"
+            }`}
             disabled={accepted}
             onClick={onAccept}
           >
             <ThumbsUp className="w-4 h-4 mr-2" />
             {accepted ? "Aceptado" : "Aceptar"}
           </Button>
+
+          {/* Editar */}
           <Button
             variant="outline"
             className="flex-1 rounded-xl bg-white/50 border-white/50"
-            onClick={onEdit}
+            onClick={onEdit}         
           >
             <Edit className="w-4 h-4 mr-2" />
             Editar
