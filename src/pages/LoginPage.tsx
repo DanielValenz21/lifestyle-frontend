@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, Eye, EyeOff } from 'lucide-react'
 import api from '../lib/api'
 import { useDispatch } from 'react-redux'
 import type { AppDispatch } from '../app/store'
@@ -7,19 +7,49 @@ import { loginSuccess } from '../features/auth/authSlice'
 import { useNavigate } from 'react-router-dom'
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail]       = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState('')
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
+  const validateForm = () => {
+    if (!email) {
+      setError('El correo electrónico es requerido')
+      return false
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Por favor ingrese un correo electrónico válido')
+      return false
+    }
+    if (!password) {
+      setError('La contraseña es requerida')
+      return false
+    }
+    if (password.length < 4) {
+      setError('La contraseña debe tener al menos 4 caracteres')
+      return false
+    }
+    return true
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
+    
+    if (!validateForm()) return
+
     try {
       const { data } = await api.post('/auth/login', { email, password })
       dispatch(loginSuccess(data.token))
       navigate('/')
-    } catch (error) {
-      console.error('Login failed:', error)
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        setError('Correo electrónico o contraseña incorrectos')
+      } else {
+        setError('Error al iniciar sesión. Por favor intente nuevamente.')
+      }
     }
   }
 
@@ -38,15 +68,39 @@ const LoginPage: React.FC = () => {
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 px-6 py-10">
           <input
-            type="email" value={email} onChange={e => setEmail(e.target.value)}
+            type="email"
+            value={email}
+            onChange={e => {
+              setEmail(e.target.value)
+              setError('')
+            }}
             placeholder="Correo electrónico"
-            className="h-12 px-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pastelBlue transition"
+            className={`h-12 px-4 rounded-xl border ${error && !email ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-pastelBlue transition`}
           />
-          <input
-            type="password" value={password} onChange={e => setPassword(e.target.value)}
-            placeholder="Contraseña"
-            className="h-12 px-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-pastelBlue transition"
-          />
+          
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={e => {
+                setPassword(e.target.value)
+                setError('')
+              }}
+              placeholder="Contraseña"
+              className={`h-12 w-full px-4 rounded-xl border ${error && !password ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-pastelBlue transition`}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+
+          {error && (
+            <p className="text-red-500 text-sm -mt-2">{error}</p>
+          )}
 
           {/* Botón primario */}
           <button
@@ -84,4 +138,3 @@ const LoginPage: React.FC = () => {
 }
 
 export default LoginPage
- 
