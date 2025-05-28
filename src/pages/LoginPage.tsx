@@ -1,13 +1,26 @@
 import React, { useState } from 'react'
 import { Sparkles } from 'lucide-react'
+import api from '../lib/api'
+import { useDispatch } from 'react-redux'
+import type { AppDispatch } from '../app/store'
+import { loginSuccess } from '../features/auth/authSlice'
+import { useNavigate } from 'react-router-dom'
 
 const LoginPage: React.FC = () => {
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // 🔒 Aquí conectarás al endpoint /auth/login más adelante
+    try {
+      const { data } = await api.post('/auth/login', { email, password })
+      dispatch(loginSuccess(data.token))
+      navigate('/')
+    } catch (error) {
+      console.error('Login failed:', error)
+    }
   }
 
   return (
@@ -71,3 +84,4 @@ const LoginPage: React.FC = () => {
 }
 
 export default LoginPage
+ 
