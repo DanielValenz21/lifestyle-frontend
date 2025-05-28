@@ -28,7 +28,7 @@ export const pastelSections: PlanSection[] = [
     id: "professional",
     icon: Briefcase,
     title: "Desarrollo Profesional",
-    color: "bg-pink-100",
+    color: "bg-pastelPink",
     content: `**Semana 1-2: Fundación**
 • Actualizar CV y LinkedIn
 • Identificar 3 oportunidades de networking
@@ -43,7 +43,7 @@ export const pastelSections: PlanSection[] = [
     id: "training",
     icon: Dumbbell,
     title: "Entrenamiento Físico",
-    color: "bg-cyan-100",
+    color: "bg-pastelBlue",
     content: `**Rutina Semanal Prog.**
 • Cardio 30 min + fuerza 20 min 3×/sem
 • Yoga 25 min 2×/sem
@@ -57,7 +57,7 @@ Mes 1: hábito · Mes 2: +15 % intensidad`,
     id: "hobbies",
     icon: Book,
     title: "Desarrollo de Hobbies",
-    color: "bg-purple-100",
+    color: "bg-pastelLav",
     content: `**Lectura**
 • 30 min diarios
 • Meta 2 libros/mes
@@ -72,7 +72,7 @@ Mes 1: hábito · Mes 2: +15 % intensidad`,
     id: "nutrition",
     icon: UtensilsCrossed,
     title: "Nutrición Balanceada",
-    color: "bg-emerald-100",
+    color: "bg-pastelMint",
     content: `• Meal-prep dominical (4 comidas)
 • 5 porciones de frutas/verduras
 • 2 .5 L agua + infusiones
@@ -85,7 +85,7 @@ App de tracking · revisión semanal`,
     id: "wellness",
     icon: Heart,
     title: "Bienestar Mental",
-    color: "bg-rose-100",
+    color: "bg-pastelPink",
     content: `• Meditación 10 min/día
 • Journaling nocturno
 • ≤ 1 h redes sociales
