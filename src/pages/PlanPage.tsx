@@ -1,5 +1,6 @@
 
 import { useState } from "react";
+
 import { pastelSections, type PlanSection } from "../mocks/plan";
 import { Progress } from "../components/ui/Progress";
 import { Button } from "../components/ui/button";
