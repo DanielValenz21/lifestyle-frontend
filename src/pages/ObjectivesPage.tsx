@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import type { AreaKey, ObjectiveForm } from '../types/objectives'
+import LoadingModal from '../components/LoadingModal'
 
 /* ───────────────────────── Constants ───────────────────────── */
 const AREAS: Record<AreaKey, {
@@ -56,16 +57,15 @@ const INITIAL_FORM: ObjectiveForm = {
 const ObjectivesPage: React.FC = () => {
   const nav = useNavigate()
   const [current, setCurrent] = useState<AreaKey>('professional')
-  const [form, setForm]       = useState<ObjectiveForm>(INITIAL_FORM)
+  const [form, setForm] = useState<ObjectiveForm>(INITIAL_FORM)
+  const [generating, setGenerating] = useState(false)
 
   /* helpers */
   const updateArea = (key: AreaKey, data: Partial<{ text: string; detail: number }>) =>
     setForm(prev => ({ ...prev, [key]: { ...prev[key], ...data }}))
 
   const handleGenerate = () => {
-    console.log('payload to IA =>', form)
-    // TODO: POST /plans  { title, parameters: form }
-    nav('/plans')            // ← redirige cuando tengas id
+    setGenerating(true)
   }
 
   /* ───────────────────────── View ──────────────────────────── */
@@ -161,6 +161,16 @@ const ObjectivesPage: React.FC = () => {
       >
         <Sparkles className="w-5 h-5" /> Generar plan con IA
       </button>
+
+      {/* Modal de carga */}
+      <LoadingModal
+        open={generating}
+        duration={3200}
+        onFinish={() => {
+          setGenerating(false)
+          nav('/plans/1')
+        }}
+      />
     </div>
   )
 }
